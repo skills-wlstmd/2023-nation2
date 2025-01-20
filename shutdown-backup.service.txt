@@ -1,0 +1,12 @@
+[Unit]
+Description=shutdown backup service
+DefaultDependencies=no
+Before=halt.target shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c 'aws s3 cp /home/ec2-user/log/app.log s3://wsi-logs-wlst/accesslog-backup/shutdown/$(date +%%Y/%%m/%%d/%%H/%%M)/app.log'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=halt.target shutdown.target reboot.target
